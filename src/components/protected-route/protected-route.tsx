@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
+import { ReactNode, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
+  fetchUser,
   selectIsAuthorization,
   selectIsAuthorited
 } from '../../slices/sliceUser';
@@ -8,22 +9,32 @@ import { Navigate } from 'react-router';
 import { Preloader } from '@ui';
 
 type ProtectedRouteProps = {
-  passUnAuth?: boolean;
+  onlyUnAuth?: boolean;
   children: ReactNode;
 };
 
 export const ProtectedRoute = ({
-  passUnAuth,
+  onlyUnAuth,
   children
 }: ProtectedRouteProps) => {
-  const authorithation = useSelector(selectIsAuthorization);
-  const authorithed = useSelector(selectIsAuthorited);
+  const dispatch = useAppDispatch();
+  const authorithation = useAppSelector(selectIsAuthorization);
+  const authorithed = useAppSelector(selectIsAuthorited);
+
+  useEffect(() => {
+    console.log('<== check effect ==>');
+    dispatch(fetchUser());
+  }, []);
 
   if (authorithation) {
     return <Preloader />;
   }
 
-  if (!passUnAuth && !authorithed) {
+  if (onlyUnAuth && authorithed) {
+    return <Navigate replace to='/' />;
+  }
+
+  if (!onlyUnAuth && !authorithed) {
     return <Navigate replace to='/login' />;
   }
 

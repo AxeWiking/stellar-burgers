@@ -1,11 +1,11 @@
 import { ChangeEvent, SyntheticEvent } from 'react';
 
 export type ProfileUIProps = {
-  formValue: {
+  formValue: Partial<{
     name: string;
     email: string;
     password: string;
-  };
+  }>;
   isFormChanged: boolean;
   handleSubmit: (e: SyntheticEvent) => void;
   handleCancel: (e: SyntheticEvent) => void;

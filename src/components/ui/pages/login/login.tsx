@@ -9,12 +9,9 @@ import { Link } from 'react-router-dom';
 import { LoginUIProps } from './type';
 
 export const LoginUI: FC<LoginUIProps> = ({
-  email,
-  setEmail,
-  errorText,
-  handleSubmit,
-  password,
-  setPassword
+  fields,
+  handleChange,
+  handleSubmit
 }) => (
   <main className={styles.container}>
     <div className={`pt-6 ${styles.wrapCenter}`}>
@@ -29,8 +26,8 @@ export const LoginUI: FC<LoginUIProps> = ({
             <Input
               type='email'
               placeholder='E-mail'
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={handleChange}
+              value={fields.email}
               name='email'
               error={false}
               errorText=''
@@ -39,8 +36,8 @@ export const LoginUI: FC<LoginUIProps> = ({
           </div>
           <div className='pb-6'>
             <PasswordInput
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={handleChange}
+              value={fields.password}
               name='password'
             />
           </div>
@@ -49,9 +46,9 @@ export const LoginUI: FC<LoginUIProps> = ({
               Войти
             </Button>
           </div>
-          {errorText && (
+          {fields.errorText && (
             <p className={`${styles.error} text text_type_main-default pb-6`}>
-              {errorText}
+              {fields.errorText}
             </p>
           )}
         </>

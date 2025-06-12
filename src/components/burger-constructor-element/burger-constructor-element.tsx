@@ -6,11 +6,11 @@ import {
   designTuneMore,
   designTuneDrop
 } from '../../slices/sliceDesigner';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../services/store';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
   ({ ingredient, index, totalItems }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleMoveDown = () => {
       dispatch(designTuneMore(ingredient.id));

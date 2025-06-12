@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   selectBurgerBun,
@@ -17,19 +16,19 @@ import {
   clearOrder
 } from '../../slices/sliceOrder';
 import { selectIsAuthorited } from '../../slices/sliceUser';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const constructorItems = {
-    bun: useSelector(selectBurgerBun),
-    ingredients: useSelector(selectBurgerFilling)
+    bun: useAppSelector(selectBurgerBun),
+    ingredients: useAppSelector(selectBurgerFilling)
   };
-  const authorithed = useSelector(selectIsAuthorited);
-  const orderConfirm = useSelector(selectOrderConfirmed);
-  const orderRequest = useSelector(selectOrderRequested);
-  const orderModalData = useSelector(selectOrderCompleted);
+  const authorithed = useAppSelector(selectIsAuthorited);
+  const orderConfirm = useAppSelector(selectOrderConfirmed);
+  const orderRequest = useAppSelector(selectOrderRequested);
+  const orderModalData = useAppSelector(selectOrderCompleted);
 
   if (orderConfirm && !authorithed) {
     navigate('/login');
@@ -39,6 +38,7 @@ export const BurgerConstructor: FC = () => {
     const ingredients = constructorItems.ingredients.map(
       (value: TConstructorIngredient) => value._id
     );
+    ingredients.unshift(constructorItems.bun._id);
     ingredients.push(constructorItems.bun._id);
     dispatch(performOrder(ingredients));
   }

@@ -3,15 +3,14 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { fetchOrder, selectOrder } from '../../slices/sliceOrderCard';
 import { selectIngredients } from '../../slices/sliceIngredients';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const OrderInfo: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const orderData = useSelector(selectOrder);
-  const ingredients: TIngredient[] = useSelector(selectIngredients);
+  const dispatch = useAppDispatch();
+  const orderData = useAppSelector(selectOrder);
+  const ingredients: TIngredient[] = useAppSelector(selectIngredients);
   const number = Number(useParams<{ number: string }>().number);
 
   useEffect(() => {

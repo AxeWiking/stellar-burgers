@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  TServerResponse,
   TRegisterData,
   TLoginData,
   registerUserApi,
+  getUserApi,
   loginUserApi,
+  resetPasswordApi,
   updateUserApi,
   getOrdersApi,
   logoutApi
@@ -13,17 +16,28 @@ import { setCookie, deleteCookie } from '../utils/cookie';
 
 export const performRegisterUser = createAsyncThunk(
   'auth/registerUser',
-  async (regdata: TRegisterData) => registerUserApi(regdata)
+  async (regdata: TRegisterData) => registerUserApi(regdata).then(acceptAuth)
 );
+
+export const fetchUser = createAsyncThunk('auth/getUser', async () =>
+  getUserApi()
+);
+
+export const testUser = createAsyncThunk('auth/testUser', () => {
+  console.log('test');
+});
 
 export const performLoginUser = createAsyncThunk(
   'auth/loginUser',
-  async (logindata: TLoginData) => loginUserApi(logindata)
+  async (logindata: TLoginData) => loginUserApi(logindata).then(acceptAuth)
 );
 
 export const performUpdateUser = createAsyncThunk(
   'auth/updateUser',
-  async (regdata: TRegisterData) => updateUserApi(regdata)
+  async (regdata: Partial<TRegisterData>) => {
+    console.log(regdata);
+    return updateUserApi(regdata);
+  }
 );
 
 export const fetchOrders = createAsyncThunk('auth/getOrders', async () =>
@@ -31,17 +45,34 @@ export const fetchOrders = createAsyncThunk('auth/getOrders', async () =>
 );
 
 export const performLogoutUser = createAsyncThunk('auth/logoutUser', async () =>
-  logoutApi()
+  logoutApi().then(clearAuth)
 );
 
-function acceptAuth(auth: { refreshToken: string; accessToken: string }) {
-  localStorage.setItem('refreshToken', auth.refreshToken);
-  setCookie('accessToken', auth.accessToken);
+export const performResetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (data: { password: string; token: string }) => resetPasswordApi(data)
+);
+
+function acceptAuth(
+  data: TServerResponse<{
+    refreshToken: string;
+    accessToken: string;
+    user: TUser;
+  }>
+) {
+  if (data.success) {
+    localStorage.setItem('refreshToken', data.refreshToken);
+    setCookie('accessToken', data.accessToken);
+  }
+  return data;
 }
 
-function clearAuth() {
-  localStorage.removeItem('refreshToken');
-  deleteCookie('accessToken');
+function clearAuth(data: TServerResponse<{}>) {
+  if (data.success) {
+    localStorage.removeItem('refreshToken');
+    deleteCookie('accessToken');
+  }
+  return data;
 }
 
 export interface StateUser {
@@ -84,7 +115,23 @@ export const sliceUser = createSlice({
           state.user = payload.user;
           state.error = null;
           state.orders = null;
-          acceptAuth(payload);
+        }
+      });
+
+    builder
+      .addCase(fetchUser.pending, (state) => {
+        state.isAuthorization = true;
+      })
+      .addCase(fetchUser.rejected, (state, { error }) => {
+        state.isAuthorization = false;
+        state.error = error.message || 'error';
+      })
+      .addCase(fetchUser.fulfilled, (state, { payload }) => {
+        state.isAuthorization = false;
+        if (payload.success) {
+          state.user = payload.user;
+          state.error = null;
+          state.orders = null;
         }
       });
 
@@ -98,11 +145,11 @@ export const sliceUser = createSlice({
       })
       .addCase(performLoginUser.fulfilled, (state, { payload }) => {
         state.isAuthorization = false;
+        console.log('operate login');
         if (payload.success) {
           state.user = payload.user;
           state.error = null;
           state.orders = null;
-          acceptAuth(payload);
         }
       });
 
@@ -112,6 +159,7 @@ export const sliceUser = createSlice({
       })
       .addCase(performUpdateUser.rejected, (state, { error }) => {
         state.isAuthorization = false;
+        state.error = error.message || 'error';
       })
       .addCase(performUpdateUser.fulfilled, (state, { payload }) => {
         state.isAuthorization = false;
@@ -129,6 +177,21 @@ export const sliceUser = createSlice({
       });
 
     builder
+      .addCase(performResetPassword.pending, (state) => {
+        state.isAuthorization = true;
+      })
+      .addCase(performResetPassword.rejected, (state, { error }) => {
+        state.isAuthorization = false;
+        state.error = error.message || 'error';
+      })
+      .addCase(performResetPassword.fulfilled, (state, { payload }) => {
+        state.isAuthorization = false;
+        if (payload.success) {
+          state.error = null;
+        }
+      });
+
+    builder
       .addCase(performLogoutUser.pending, (state) => {
         state.isAuthorization = true;
       })
@@ -141,7 +204,6 @@ export const sliceUser = createSlice({
           state.user = null;
           state.error = null;
           state.orders = null;
-          clearAuth();
         }
       });
   }

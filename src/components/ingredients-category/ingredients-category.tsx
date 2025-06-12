@@ -2,7 +2,7 @@ import { forwardRef, useMemo } from 'react';
 import { TIngredientsCategoryProps } from './type';
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '../ui/ingredients-category';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/store';
 import {
   selectBurgerBun,
   selectBurgerFilling
@@ -12,12 +12,12 @@ export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
 >(({ title, titleRef, ingredients }, ref) => {
-  const bun = useSelector(selectBurgerBun);
+  const bun = useAppSelector(selectBurgerBun);
   const burgerConstructor = {
     bun: {
       _id: bun ? bun._id : ''
     },
-    ingredients: useSelector(selectBurgerFilling)
+    ingredients: useAppSelector(selectBurgerFilling)
   };
 
   const ingredientsCounters = useMemo(() => {

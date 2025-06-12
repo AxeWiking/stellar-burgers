@@ -1,20 +1,22 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrders, selectOrders } from '../../slices/sliceUser';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import { Preloader } from '@ui';
+import { TWallPaperProps } from '@utils-types';
 
-export const ProfileOrders: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const orders = useSelector(selectOrders);
+export const ProfileOrders: FC<TWallPaperProps> = ({
+  wallpaper
+}: TWallPaperProps) => {
+  const dispatch = useAppDispatch();
+  const orders = useAppSelector(selectOrders);
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, []);
 
   if (!orders) {
-    return <Preloader />;
+    return wallpaper ? null : <Preloader />;
   }
 
   return <ProfileOrdersUI orders={orders} />;

@@ -3,31 +3,32 @@ import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../../services/store';
+import { TWallPaperProps } from '@utils-types';
+import { useAppSelector, useAppDispatch } from '../../services/store';
 import {
   fetchIngredients,
   selectIsIngredientsLoaded,
   selectIsIngredientsLoading
 } from '../../slices/sliceIngredients';
 
-export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+export const ConstructorPage: FC<TWallPaperProps> = ({
+  wallpaper
+}: TWallPaperProps) => {
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);
 
-  const isIngredientsLoaded = useSelector<RootState, boolean>(
-    selectIsIngredientsLoaded
-  );
-  const isIngredientsLoading = useSelector<RootState, boolean>(
-    selectIsIngredientsLoading
-  );
+  const isIngredientsLoaded = useAppSelector(selectIsIngredientsLoaded);
+  const isIngredientsLoading = useAppSelector(selectIsIngredientsLoading);
 
   return (
     <>
       {!isIngredientsLoaded || isIngredientsLoading ? (
-        <Preloader />
+        wallpaper ? null : (
+          <Preloader />
+        )
       ) : (
         <main className={styles.containerMain}>
           <h1
