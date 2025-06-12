@@ -9,12 +9,9 @@ import { Link } from 'react-router-dom';
 import { ResetPasswordUIProps } from './type';
 
 export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
-  errorText,
-  password,
-  setPassword,
-  handleSubmit,
-  token,
-  setToken
+  fields,
+  handleChange,
+  handleSubmit
 }) => (
   <main className={styles.container}>
     <div className={`pt-6 ${styles.wrapCenter}`}>
@@ -26,8 +23,8 @@ export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
       >
         <div className='pb-6'>
           <PasswordInput
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            onChange={handleChange}
+            value={fields.password}
             name='password'
           />
         </div>
@@ -35,8 +32,8 @@ export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
           <Input
             type='text'
             placeholder='Введите код из письма'
-            onChange={(e) => setToken(e.target.value)}
-            value={token}
+            onChange={handleChange}
+            value={fields.token}
             name='token'
             error={false}
             errorText=''
@@ -48,9 +45,9 @@ export const ResetPasswordUI: FC<ResetPasswordUIProps> = ({
             Сохранить
           </Button>
         </div>
-        {errorText && (
+        {fields.errorText && (
           <p className={`${styles.error} text text_type_main-default pb-6`}>
-            {errorText}
+            {fields.errorText}
           </p>
         )}
       </form>

@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction } from 'react';
-import { PageUIProps } from '../common-type';
+import { PageUIPropsBase } from '../common-type';
 
-export type ResetPasswordUIProps = Omit<PageUIProps, 'email' | 'setEmail'> & {
-  password: string;
-  token: string;
-  setPassword: Dispatch<SetStateAction<string>>;
-  setToken: Dispatch<SetStateAction<string>>;
+export type ResetPasswordUIProps = PageUIPropsBase & {
+  fields: {
+    errorText: string | null;
+    password: string;
+    token: string;
+  };
 };
