@@ -23,10 +23,6 @@ export const fetchUser = createAsyncThunk('auth/getUser', async () =>
   getUserApi()
 );
 
-export const testUser = createAsyncThunk('auth/testUser', () => {
-  console.log('test');
-});
-
 export const performLoginUser = createAsyncThunk(
   'auth/loginUser',
   async (logindata: TLoginData) => loginUserApi(logindata).then(acceptAuth)
@@ -34,10 +30,7 @@ export const performLoginUser = createAsyncThunk(
 
 export const performUpdateUser = createAsyncThunk(
   'auth/updateUser',
-  async (regdata: Partial<TRegisterData>) => {
-    console.log(regdata);
-    return updateUserApi(regdata);
-  }
+  async (regdata: Partial<TRegisterData>) => updateUserApi(regdata)
 );
 
 export const fetchOrders = createAsyncThunk('auth/getOrders', async () =>
@@ -145,7 +138,6 @@ export const sliceUser = createSlice({
       })
       .addCase(performLoginUser.fulfilled, (state, { payload }) => {
         state.isAuthorization = false;
-        console.log('operate login');
         if (payload.success) {
           state.user = payload.user;
           state.error = null;

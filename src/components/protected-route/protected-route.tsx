@@ -22,7 +22,6 @@ export const ProtectedRoute = ({
   const authorithed = useAppSelector(selectIsAuthorited);
 
   useEffect(() => {
-    console.log('<== check effect ==>');
     dispatch(fetchUser());
   }, []);
 
