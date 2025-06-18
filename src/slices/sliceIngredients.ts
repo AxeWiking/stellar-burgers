@@ -8,15 +8,13 @@ export const fetchIngredients = createAsyncThunk(
 );
 
 export interface StateIngredients {
-  isLoaded: boolean;
   isLoading: boolean;
-  ingredients: TIngredient[];
+  ingredients: TIngredient[] | null;
 }
 
 const initialStateIngredients: StateIngredients = {
-  isLoaded: false,
-  isLoading: false,
-  ingredients: []
+  isLoading: true,
+  ingredients: null
 };
 
 export const sliceIngredients = createSlice({
@@ -24,17 +22,26 @@ export const sliceIngredients = createSlice({
   initialState: initialStateIngredients,
   reducers: {},
   selectors: {
-    selectIsIngredientsLoaded: (state) => state.isLoaded,
     selectIsIngredientsLoading: (state) => state.isLoading,
     selectIngredients: (state) => state.ingredients,
     selectBuns: (state) =>
-      state.ingredients.filter((value: TIngredient) => value.type === 'bun'),
+      state.ingredients
+        ? state.ingredients.filter((value: TIngredient) => value.type === 'bun')
+        : [],
     selectMains: (state) =>
-      state.ingredients.filter((value: TIngredient) => value.type === 'main'),
+      state.ingredients
+        ? state.ingredients.filter(
+            (value: TIngredient) => value.type === 'main'
+          )
+        : [],
     selectSauces: (state) =>
-      state.ingredients.filter((value: TIngredient) => value.type === 'sauce'),
+      state.ingredients
+        ? state.ingredients.filter(
+            (value: TIngredient) => value.type === 'sauce'
+          )
+        : [],
     selectIngradient: (state, id: string) =>
-      state.ingredients.find((value: TIngredient) => value._id == id)
+      state.ingredients?.find((value: TIngredient) => value._id == id)
   },
   extraReducers: (builder) => {
     builder
@@ -45,7 +52,6 @@ export const sliceIngredients = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {
-        state.isLoaded = true;
         state.isLoading = false;
         state.ingredients = action.payload;
       });
@@ -53,7 +59,6 @@ export const sliceIngredients = createSlice({
 });
 
 export const {
-  selectIsIngredientsLoaded,
   selectIsIngredientsLoading,
   selectIngredients,
   selectBuns,

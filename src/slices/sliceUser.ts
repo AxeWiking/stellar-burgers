@@ -76,7 +76,7 @@ export interface StateUser {
 }
 
 const initialStateUser: StateUser = {
-  isAuthorization: false,
+  isAuthorization: true,
   user: null,
   orders: null,
   error: null

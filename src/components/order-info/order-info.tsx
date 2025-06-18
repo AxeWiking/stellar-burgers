@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../services/store';
 export const OrderInfo: FC = () => {
   const dispatch = useAppDispatch();
   const orderData = useAppSelector(selectOrder);
-  const ingredients: TIngredient[] = useAppSelector(selectIngredients);
+  const ingredients = useAppSelector(selectIngredients);
   const number = Number(useParams<{ number: string }>().number);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const OrderInfo: FC = () => {
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
-    if (!orderData || !ingredients.length) return null;
+    if (!orderData || !ingredients || !ingredients.length) return null;
 
     const date = new Date(orderData.createdAt);
 

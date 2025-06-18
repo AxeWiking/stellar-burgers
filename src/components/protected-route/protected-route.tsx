@@ -5,8 +5,9 @@ import {
   selectIsAuthorization,
   selectIsAuthorited
 } from '../../slices/sliceUser';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { Preloader } from '@ui';
+import { TWallPaperProps } from '@utils-types';
 
 type ProtectedRouteProps = {
   onlyUnAuth?: boolean;
@@ -15,9 +16,11 @@ type ProtectedRouteProps = {
 
 export const ProtectedRoute = ({
   onlyUnAuth,
-  children
-}: ProtectedRouteProps) => {
+  children,
+  wallpaper
+}: ProtectedRouteProps & TWallPaperProps) => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const authorithation = useAppSelector(selectIsAuthorization);
   const authorithed = useAppSelector(selectIsAuthorited);
 
@@ -26,15 +29,16 @@ export const ProtectedRoute = ({
   }, []);
 
   if (authorithation) {
-    return <Preloader />;
+    return wallpaper ? null : <Preloader />;
   }
 
   if (onlyUnAuth && authorithed) {
-    return <Navigate replace to='/' />;
+    const { from } = location.state || { from: { pathname: '/' } };
+    return <Navigate to={from} />;
   }
 
   if (!onlyUnAuth && !authorithed) {
-    return <Navigate replace to='/login' />;
+    return <Navigate to='/login' state={{ from: location }} />;
   }
 
   return children;

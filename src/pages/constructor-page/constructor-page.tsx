@@ -7,7 +7,6 @@ import { TWallPaperProps } from '@utils-types';
 import { useAppSelector, useAppDispatch } from '../../services/store';
 import {
   fetchIngredients,
-  selectIsIngredientsLoaded,
   selectIsIngredientsLoading
 } from '../../slices/sliceIngredients';
 
@@ -20,12 +19,11 @@ export const ConstructorPage: FC<TWallPaperProps> = ({
     dispatch(fetchIngredients());
   }, []);
 
-  const isIngredientsLoaded = useAppSelector(selectIsIngredientsLoaded);
   const isIngredientsLoading = useAppSelector(selectIsIngredientsLoading);
 
   return (
     <>
-      {!isIngredientsLoaded || isIngredientsLoading ? (
+      {isIngredientsLoading ? (
         wallpaper ? null : (
           <Preloader />
         )

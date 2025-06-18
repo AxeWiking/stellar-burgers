@@ -22,8 +22,15 @@ import {
 import styles from './app.module.css';
 import '../../index.css';
 
-function makeProtected(element: ReactElement, onlyUnAuth: boolean = false) {
-  return <ProtectedRoute onlyUnAuth={onlyUnAuth}>{element}</ProtectedRoute>;
+function makeProtected(
+  element: ReactElement,
+  { onlyUnAuth, wallpaper }: { onlyUnAuth?: boolean; wallpaper?: boolean } = {}
+) {
+  return (
+    <ProtectedRoute onlyUnAuth={onlyUnAuth} wallpaper={wallpaper}>
+      {element}
+    </ProtectedRoute>
+  );
 }
 
 const App = () => {
@@ -42,15 +49,21 @@ const App = () => {
           />
           <Route path='/feed' element={<Feed />} />
           <Route path='/feed/:number' element={<Feed wallpaper />} />
-          <Route path='/login' element={makeProtected(<Login />, true)} />
-          <Route path='/register' element={makeProtected(<Register />, true)} />
+          <Route
+            path='/login'
+            element={makeProtected(<Login />, { onlyUnAuth: true })}
+          />
+          <Route
+            path='/register'
+            element={makeProtected(<Register />, { onlyUnAuth: true })}
+          />
           <Route
             path='/forgot-password'
-            element={makeProtected(<ForgotPassword />, true)}
+            element={makeProtected(<ForgotPassword />, { onlyUnAuth: true })}
           />
           <Route
             path='/reset-password'
-            element={makeProtected(<ResetPassword />, true)}
+            element={makeProtected(<ResetPassword />, { onlyUnAuth: true })}
           />
           <Route path='/profile' element={makeProtected(<Profile />)} />
           <Route
@@ -59,7 +72,9 @@ const App = () => {
           />
           <Route
             path='/profile/orders/:number'
-            element={makeProtected(<ProfileOrders wallpaper />)}
+            element={makeProtected(<ProfileOrders wallpaper />, {
+              wallpaper: true
+            })}
           />
         </Routes>
         <Routes>

@@ -6,13 +6,13 @@ import { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
   fetchFeeds,
-  selectFeedsLoaded,
   selectFeedsLoading,
   selectFeeds
 } from '../../slices/sliceFeeds';
 import {
   fetchIngredients,
-  selectIsIngredientsLoaded
+  selectIngredients,
+  selectIsIngredientsLoading
 } from '../../slices/sliceIngredients';
 
 export const Feed: FC<TWallPaperProps> = ({ wallpaper }: TWallPaperProps) => {
@@ -22,18 +22,20 @@ export const Feed: FC<TWallPaperProps> = ({ wallpaper }: TWallPaperProps) => {
     dispatch(fetchIngredients());
   }, []);
 
-  const isIngradientsLoaded = useAppSelector(selectIsIngredientsLoaded);
-  const isFeedsLoaded = useAppSelector(selectFeedsLoaded);
+  const orders = useAppSelector(selectFeeds);
   const isFeedsLoading = useAppSelector(selectFeedsLoading);
-  const orders: TOrder[] = useAppSelector(selectFeeds) || [];
 
-  if (!isFeedsLoaded || !isIngradientsLoaded || isFeedsLoading) {
+  const ingredients = useAppSelector(selectIngredients);
+  const isIngredientsLoading = useAppSelector(selectIsIngredientsLoading);
+
+  if (!orders || !ingredients || isFeedsLoading || isIngredientsLoading) {
     return wallpaper ? null : <Preloader />;
   }
 
   return (
     <FeedUI
       orders={orders}
+      ingredients={ingredients}
       handleGetFeeds={() => {
         dispatch(fetchFeeds());
       }}

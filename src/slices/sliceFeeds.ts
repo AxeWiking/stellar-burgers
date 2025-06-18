@@ -25,7 +25,6 @@ export const sliceFeeds = createSlice({
   initialState: initialStateFeeds,
   reducers: {},
   selectors: {
-    selectFeedsLoaded: (state) => !!state.feeds,
     selectFeedsLoading: (state) => state.isFeedsLoading,
     selectFeeds: (state) => state.feeds,
     selectTotal: (state) => state.total,
@@ -51,7 +50,6 @@ export const sliceFeeds = createSlice({
 });
 
 export const {
-  selectFeedsLoaded,
   selectFeedsLoading,
   selectFeeds,
   selectTotal,
