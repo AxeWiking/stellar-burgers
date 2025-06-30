@@ -1,15 +1,44 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
+import { TOrder, TWallPaperProps } from '@utils-types';
+import { FC, useEffect } from 'react';
 
-export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import {
+  fetchFeeds,
+  selectFeedsLoading,
+  selectFeeds
+} from '../../slices/sliceFeeds';
+import {
+  fetchIngredients,
+  selectIngredients,
+  selectIsIngredientsLoading
+} from '../../slices/sliceIngredients';
 
-  if (!orders.length) {
-    return <Preloader />;
+export const Feed: FC<TWallPaperProps> = ({ wallpaper }: TWallPaperProps) => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchFeeds());
+    dispatch(fetchIngredients());
+  }, []);
+
+  const orders = useAppSelector(selectFeeds);
+  const isFeedsLoading = useAppSelector(selectFeedsLoading);
+
+  const ingredients = useAppSelector(selectIngredients);
+  const isIngredientsLoading = useAppSelector(selectIsIngredientsLoading);
+
+  if (!orders || !ingredients || isFeedsLoading || isIngredientsLoading) {
+    return wallpaper ? null : <Preloader />;
   }
 
-  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return (
+    <FeedUI
+      orders={orders}
+      ingredients={ingredients}
+      handleGetFeeds={() => {
+        dispatch(fetchFeeds());
+      }}
+    />
+  );
 };

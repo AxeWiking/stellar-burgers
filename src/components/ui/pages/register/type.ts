@@ -1,9 +1,11 @@
-import { Dispatch, SetStateAction } from 'react';
-import { PageUIProps } from '../common-type';
+import { PageUIPropsBase } from '../common-type';
 
-export type RegisterUIProps = PageUIProps & {
-  password: string;
-  userName: string;
-  setPassword: Dispatch<SetStateAction<string>>;
-  setUserName: Dispatch<SetStateAction<string>>;
+export type RegisterUIProps = PageUIPropsBase & {
+  fields: {
+    errorText: string | null;
+    name: string,
+    email: string,
+    password: string 
+  };
 };
+
