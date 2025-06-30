@@ -17,6 +17,7 @@ export const ProfileOrders: FC<TWallPaperProps> = ({
   const ingredients = useAppSelector(selectIngredients);
 
   useEffect(() => {
+    console.log('fetch orders and ingredients', orders);
     dispatch(fetchOrders());
     dispatch(fetchIngredients());
   }, []);

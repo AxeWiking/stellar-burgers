@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { orderBurgerApi, getFeedsApi } from '../utils/burger-api';
+import { orderBurgerApi, getFeedsApi } from '@api';
 import { TOrder } from '@utils-types';
 
 export const fetchFeeds = createAsyncThunk('feeds/getAll', async () =>
@@ -13,7 +13,7 @@ export interface StateFeeds {
   totalToday: number | null;
 }
 
-export const initialStateFeeds: StateFeeds = {
+const initialStateFeeds: StateFeeds = {
   isFeedsLoading: false,
   feeds: null,
   total: null,

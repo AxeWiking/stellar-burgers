@@ -10,7 +10,7 @@ import {
   updateUserApi,
   getOrdersApi,
   logoutApi
-} from '../utils/burger-api';
+} from '@api';
 import { TUser, TOrder } from '@utils-types';
 import { setCookie, deleteCookie } from '../utils/cookie';
 
@@ -75,7 +75,7 @@ export interface StateUser {
   error: string | null;
 }
 
-export const initialStateUser: StateUser = {
+const initialStateUser: StateUser = {
   isAuthorization: true,
   user: null,
   orders: null,

@@ -6,7 +6,7 @@ export interface StateDesigner {
   filling: TConstructorIngredient[];
 }
 
-export const initialStateDesigner: StateDesigner = {
+const initialStateDesigner: StateDesigner = {
   bun: null,
   filling: []
 };
@@ -73,4 +73,3 @@ export const {
 } = sliceDesigner.actions;
 
 export const { selectBurgerBun, selectBurgerFilling } = sliceDesigner.selectors;
-export const reducer = sliceDesigner.reducer;

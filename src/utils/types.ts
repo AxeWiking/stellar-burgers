@@ -42,3 +42,4 @@ export type TTabMode = 'bun' | 'sauce' | 'main';
 export type TWallPaperProps = {
   wallpaper?: boolean;
 };
+

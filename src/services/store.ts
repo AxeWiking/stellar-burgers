@@ -9,8 +9,9 @@ import { sliceIngredients } from '../slices/sliceIngredients';
 import { sliceFeeds } from '../slices/sliceFeeds';
 import { sliceOrder } from '../slices/sliceOrder';
 import { sliceOrderCard } from '../slices/sliceOrderCard';
+//import { stat } from 'fs';
 
-export const rootReducer = combineSlices(
+const rootReducer = combineSlices(
   sliceUser,
   sliceIngredients,
   sliceDesigner,
