@@ -2,7 +2,7 @@ import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { selectUser, performUpdateUser } from '../../slices/sliceUser';
 import { useAppDispatch, useAppSelector } from '../../services/store';
-import { TRegisterData } from '@api';
+import { TRegisterData } from '../../utils/burger-api';
 
 export const Profile: FC = () => {
   const dispatch = useAppDispatch();
