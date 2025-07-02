@@ -41,3 +41,4 @@ export const sliceOrderCard = createSlice({
 });
 
 export const { selectOrderRequested, selectOrder } = sliceOrderCard.selectors;
+export const reducer = sliceOrderCard.reducer;

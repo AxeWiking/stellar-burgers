@@ -58,3 +58,5 @@ export const {
   selectOrderRequested,
   selectOrderCompleted
 } = sliceOrder.selectors;
+
+export const reducer = sliceOrder.reducer;

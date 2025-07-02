@@ -189,6 +189,7 @@ export const sliceUser = createSlice({
       })
       .addCase(performLogoutUser.rejected, (state, { error }) => {
         state.isAuthorization = false;
+        state.error = error.message || 'error';
       })
       .addCase(performLogoutUser.fulfilled, (state, { payload }) => {
         state.isAuthorization = false;
@@ -208,3 +209,4 @@ export const {
   selectOrders,
   selectError
 } = sliceUser.selectors;
+export const reducer = sliceUser.reducer;

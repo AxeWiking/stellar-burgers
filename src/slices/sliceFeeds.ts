@@ -14,7 +14,7 @@ export interface StateFeeds {
 }
 
 export const initialStateFeeds: StateFeeds = {
-  isFeedsLoading: false,
+  isFeedsLoading: true,
   feeds: null,
   total: null,
   totalToday: null
@@ -55,3 +55,5 @@ export const {
   selectTotal,
   selectTotalToday
 } = sliceFeeds.selectors;
+
+export const reducer = sliceFeeds.reducer;

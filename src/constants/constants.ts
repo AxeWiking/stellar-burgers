@@ -95,3 +95,35 @@ export const firmSauce = {
   image_mobile: 'https://code.s3.yandex.net/react/code/sauce-04-mobile.png',
   image_large: 'https://code.s3.yandex.net/react/code/sauce-04-large.png'
 };
+
+export const mockOrderOne = {
+  _id: 'secret-one-id',
+  status: 'done',
+  name: 'Кислотная отрыжка',
+  createdAt: '2025-07-01T20:57:45.554Z',
+  updatedAt: '2025-07-01T20:57:46.400Z',
+  number: 777,
+  ingredients: [cratorBun._id, firmSauce._id, undeadMeat._id, cratorBun._id]
+};
+
+export const mockOrderToo = {
+  _id: 'secret-too-id',
+  status: 'done',
+  name: 'Конская радость',
+  createdAt: '2025-07-01T21:51:45.554Z',
+  updatedAt: '2025-07-01T21:51:46.400Z',
+  number: 666,
+  ingredients: [spicySauce._id]
+};
+
+export const solidOrders = [mockOrderOne, mockOrderToo];
+
+export const mockPirateUser = {
+  email: 'pirate@mail.org',
+  name: 'Чёрная борода'
+};
+
+export const mockAdvancedPirateUser = {
+  email: 'advanced_pirate@mail.org',
+  name: 'Сам Флинт'
+};

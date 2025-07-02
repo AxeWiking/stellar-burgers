@@ -14,6 +14,14 @@ const mockIngredients: TIngredient[] = [
 ];
 
 describe('тестируем редьюсер загрузки ингредиентов', () => {
+  test('тестируем запрос', () => {
+    const state = reducer(
+      initialStateIngredients,
+      fetchIngredients.pending('')
+    );
+    expect(state).toEqual({ ...initialStateIngredients, isLoading: true });
+  });
+
   test('тестируем успешный асинхронный запрос', async () => {
     const mock = jest
       .spyOn(api, 'getIngredientsApi')
