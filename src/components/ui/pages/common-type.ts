@@ -11,4 +11,3 @@ export type PageUIPropsBase = {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: SyntheticEvent) => void;
 };
-

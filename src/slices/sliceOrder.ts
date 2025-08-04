@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { orderBurgerApi } from '@api';
+import { orderBurgerApi } from '../utils/burger-api';
 import { TOrder } from '@utils-types';
 
 export const performOrder = createAsyncThunk(
@@ -13,7 +13,7 @@ export interface StateOrder {
   completed: TOrder | null;
 }
 
-const initialStateOrder: StateOrder = {
+export const initialStateOrder: StateOrder = {
   isOrderConfirmed: false,
   isOrderRequested: false,
   completed: null
@@ -58,3 +58,5 @@ export const {
   selectOrderRequested,
   selectOrderCompleted
 } = sliceOrder.selectors;
+
+export const reducer = sliceOrder.reducer;
